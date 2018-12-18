@@ -1,22 +1,24 @@
 import numpy
+from fractions import Fraction
+import functools
 
-choose = lambda n, k: not k if not k else (n+1-k)/k*choose(n, k-1)
+choose = lambda n, k: 1 if not k else int((n+1-k)/k*choose(n, k-1))
 
-def powersum_(p):
-    s = numpy.append(numpy.zeros(p), [1, 1])
-    for j in range(1, p):
-        s = numpy.append(s[:j+2] + powersum(j)*((-1)**(p+1-j))*choose(p, j-1), s[j+2:])
-    return s
-
+@functools.lru_cache(maxsize=None)
 def powersum(p):
-    return powersum_(p)/(p+1)
+    s = numpy.array([Fraction() for i in range(p)] + [Fraction(1)]*2)
+    for j in range(1, p):
+        s = numpy.append(s[:j+2] + powersum(j)*Fraction(((-1)**(p+1-j))*choose(p, j-1)), s[j+2:])
+    return s*Fraction(1, p+1)
+
+##def listtotext(s):
+##    p = '' + str(s[0])
+##    for i in range(1, len(s)):
+##        p += ' + %.2f n^%d'%(round(s[i], 3), i)
+##    print(p)
 
 def listtotext(s):
-    p = '' + str(s[0])
-    for i in range(1, len(s)):
-        p += ' + %.2f n^%d'%(round(s[i], 3), i)
-    print(p)
-
+    print('+'.join(list(map(lambda c: format(str(c), '<8s'), s))))
 #print(listtotext(powersum(int(input('n: ')))))
     
 def printsums(n):

@@ -39,4 +39,3 @@ t1 = time.clock()
 a = optimisedsieve(123456789)
 t2 = time.clock()
 print(t2-t1)
-
