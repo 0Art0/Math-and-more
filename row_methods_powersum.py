@@ -1,50 +1,54 @@
 from powersum_fractions import *
 
-def lcm(a, b):
-    return (a*b)//gcd(a, b)
+lcm = lambda a, b: (a*b)//gcd(a, b)
 
-def diff(a):
-    return [a[i+1]-a[i] for i in range(len(a) -1)]
-
-def asimplify(a):
-    for f in a:
-        f.simplify()
-
-def simplified(a):
-    b = []
-    for f in a:
-        e = Fraction(); e.numerator = f.numerator; e.denominator = f.denominator;
-        e.simplify()
-        b.append(e)
-    return b
+def diff(a, n=1):
+    return [a[i+1]-a[i] for i in range(len(a)-1)] if n == 1 else diff(diff(a), n-1)
 
 def disp(a):
-    o = ''
-    for f in a:
-        o += str(f) + '  '
-    print(o)
+    print(', '.join(list(map(lambda f: str(f), a))))
 
-def commonden(a):
-    dens = [f.denominator for f in a]
+def reduce(a, common=True):
     l = 1
-    for d in dens:
+    for d in [f.denominator for f in a]:
         l = lcm(l, d)
-    return l
 
-def scalmultiply(a, c):
-    return list(map(lambda f: f*Fraction(c), a))
+    b = multiply(a, l)
+    h = 0
+    for n in [f.numerator for f in b]:
+        h = gcd(h, n)
 
-def reduced(a):
-    c = commonden(a)
-    print(c)
-    return [f.numerator for f in simplified(scalmultiply(a, c))]
+    if h != 0:
+        b = multiply(b, Fraction(1, h))
+    f = Fraction(h, l)
+    print(f)
+    return f if common else [f.numerator for f in b]
 
-n = int(input('n: ')) #Recommended: 25
+def multiply(a, r):
+    return list(map(lambda f: f*r, a))
 
+col = lambda r: [l[i][r] for i in range(r, n)]
+
+def diffcount(a):
+    b = reduce(a, False)
+    count = 0
+    while(sum(b) != len(b) and sum(b) != 0):
+          b = diff(b)
+          count += 1
+    print('The list reduced to a constant sequence', b, 'in %d interations.\n' %count)
+
+def add(a, n = 1, s = 0):
+	if n != 1:
+	  return add(add(a), n-1)
+	l = [s]
+	for e in a:
+		s += e
+		l.append(s)
+	return l
+
+#Use: add([last_element(i)]*25, i-1)[i:] == col(i), when i is even
+
+#Observation: reduced(col(i)) = (-1)**(i/2+1)*[choose(n+j, j+1) for j in range(25-j)]
+
+n = int(input('n: '))
 l = [powersum(i) for i in range(n)]
-
-#for psum in l:
-#    disp(simplified(psum))
-
-row = lambda r: [l[i][i+1-r] for i in range(r, n)]
-

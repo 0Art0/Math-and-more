@@ -1,15 +1,13 @@
 import time
 
 def sieve(n):
-    nums = [True for i in range(n)]; nums[0] = False;
-    primes = []
+    nums = [False] + [True]*(n-1)
     for j in range(int(n**0.5)):
         if nums[j]:
-            primes.append(j+1)
             for i in range(j*(j+2), n, j+1):
                 nums[i] = False
 
-    return primes
+    return [i+1 for i, p in enumerate(nums) if p]
 
 
 def optimisedsieve(n):
@@ -20,6 +18,10 @@ def optimisedsieve(n):
             primes.append(j+1)
             for i in range(j*(j+2), n, 2*(j+1)):
                 nums[i] = False
+
+    for k in range(int(n**0.5) + 1*(int(n**0.5)%2), n, 2):
+        if nums[k]:
+            primes.append(k+1)        
 
     return primes
 
@@ -36,6 +38,6 @@ def lamesieve(n):
     return primes
 
 t1 = time.clock()
-a = optimisedsieve(123456789)
+a = optimisedsieve(12345678)
 t2 = time.clock()
-print(t2-t1)
+#print(t2-t1)
