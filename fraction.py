@@ -1,14 +1,18 @@
+from math import inf
+
 def gcd(c, d):
-	a, b = abs(c), abs(d)
-	return (-1)**(c < 0 and d < 0)*a if a == b else \
-                round(c+d, 8) if (round(c, 8) == 0 or round(d, 8) == 0) else ((-1)**(c < 0 and d < 0)*gcd(a%b, b%a))
+	a, b = abs(float(c)), abs(float(d))
+	return (-1)**(c < 0 or d < 0)*a if a == b else \
+                round(float(a+b), 8) if (round(float(a), 8) == 0 or round(float(b), 8) == 0) else ((-1)**(c < 0 or d < 0)*gcd(a%b, b%a))
 
 class Fraction:
 
     def __init__(self, num=0, den=1):
-        self.numerator = num
-        self.denominator = den
+        self.numerator = float(num)
+        self.denominator = float(den)
         self.simplify()
+        if self.denominator < 0:
+            self.numerator *= -1; self.denominator *= -1
 
     def simplify(self):
         d = gcd(self.numerator, self.denominator)
@@ -22,7 +26,7 @@ class Fraction:
         return Fraction(self.numerator*f.denominator + f.numerator*self.denominator, self.denominator*f.denominator)
 
     def __mul__(self, f):
-        if type(f) is int: f = Fraction(f)
+        if type(f) is int or type(f) is float: f = Fraction(f)
         return Fraction(self.numerator*f.numerator, self.denominator*f.denominator)
 
     def __sub__(self, f):
@@ -33,5 +37,27 @@ class Fraction:
         if type(f) is int: f = Fraction(f)
         return self*Fraction(f.denominator, f.numerator)
 
-    def clone(self):
-        return Fraction(self.numerator, self.denominator)
+    def __lt__(self, f):
+        return (self - f).numerator < 0
+
+    def __le__(self, f):
+        return (self - f).numerator <= 0
+
+    def __eq__(self, f):
+        return (self - f).numerator == 0
+
+    def __gt__(self, f):
+        return (self - f).numerator > 0
+
+    def __ge__(self, f):
+        return (self - f).numerator >= 0
+
+    def __ne__(self, f):
+        return (self - f).numerator != 0
+
+    def __abs__(self):
+        return self*-1 if self < Fraction() else self
+
+    def __float__(self):
+        return self.numerator/self.denominator if self.denominator != 0 else inf
+    

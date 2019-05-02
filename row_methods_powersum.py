@@ -52,3 +52,13 @@ def add(a, n = 1, s = 0):
 
 n = int(input('n: '))
 l = [powersum(i) for i in range(n)]
+
+
+for psum in l:
+	disp(psum)
+
+print('\n')
+
+for i in range(1, n):
+	disp(reduce(col(i), False))
+	print('\n')
