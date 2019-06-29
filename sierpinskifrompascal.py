@@ -19,6 +19,7 @@ def drawhex(x, y, r):
 
     #this decides the fill colour based on the remainder mod p
     turtle.fillcolor((r/p)%1, ((r+1)/p)%1, ((r+2)/p)%1)
+    #turtle.fillcolor('blue' if r==1 else 'white')
     turtle.begin_fill()
     
     for i in range(6):
@@ -26,8 +27,8 @@ def drawhex(x, y, r):
         turtle.forward(a)
     turtle.end_fill()
     
-    ##turtle.up(); turtle.goto(x-a/2, y); turtle.down()
-    ##turtle.write(str(number), False, align="left", font=('Times New Roman', int(a/2), 'normal'))
+    turtle.up(); turtle.goto(x-a/2, y); turtle.down()
+    turtle.write(str(r), False, align="left", font=('Times New Roman', int(a/2), 'normal'))
 
 
 pts = [(0, 300)] #the list of points where hexagons are to be drawn
@@ -45,4 +46,10 @@ for i in range(N):
         sea.append(C)
         s.append((pt[0]+rt3*a/2, pt[1]-3*a/2))
 
+    turtle.setposition(turtle.xcor() + 2*a, turtle.ycor())
+    turtle.write(str(i), False, align="left", font=('Times New Roman', int(a/2), 'normal'))
     see = list(sea); pts = list(s)
+
+def choose (n, k):
+    k = k if k < n - k else n - k
+    return 1 if k == 0 else int(((n+1-k)/k)*choose(n, k-1))
