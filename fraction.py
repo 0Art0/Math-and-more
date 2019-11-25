@@ -1,9 +1,8 @@
 from math import inf
 
-def gcd(c, d):
-	a, b = abs(float(c)), abs(float(d))
-	return (-1)**(c < 0 or d < 0)*a if a == b else \
-                round(float(a+b), 8) if (round(float(a), 8) == 0 or round(float(b), 8) == 0) else ((-1)**(c < 0 or d < 0)*gcd(a%b, b%a))
+def gcd(a, b):
+	return a if a == b else \
+                round(float(a+b), 8) if (round(float(a), 8) == 0 or round(float(b), 8) == 0) else gcd(a%b, b%a)
 
 class Fraction:
 
@@ -15,7 +14,7 @@ class Fraction:
             self.numerator *= -1; self.denominator *= -1
 
     def simplify(self):
-        d = gcd(self.numerator, self.denominator)
+        d = gcd(abs(self.numerator), abs(self.denominator))
         self.numerator = round(self.numerator/d); self.denominator = round(self.denominator/d);
 
     def __str__(self):
@@ -60,4 +59,3 @@ class Fraction:
 
     def __float__(self):
         return self.numerator/self.denominator if self.denominator != 0 else inf
-    
