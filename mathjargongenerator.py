@@ -13,14 +13,14 @@ nouns = numpy.loadtxt('nouns.txt', dtype='str')
 
 adjectives = numpy.loadtxt('adjectives.txt', dtype='str')
 
-padjectives = ['Abelian', 'Gaussian', 'semi-Riemannian', 'Langlands', 'Iwasa', 'Teichmuller', 'Lyapunov', 'Chebyshev', 'Polya', 'Brauer',    'Eulerian', 'Galois', 'Cauchy', 'Cartesian', 'Markovian', 'Diophantine', 'Fourier', 'Monge-Ampere', 'Borel', 'Laurent', 'non-Euclidean', 'Newtonian', 'Hermitian', 'Calabi']
+padjectives = ['Abelian', 'Gaussian', 'semi-Riemannian', 'Eulerian', 'Galois', 'Cauchy', 'Cartesian', 'Markovian', 'Diophantine', 'Fourier', 'Monge-Ampere', 'Borel', 'Laurent', 'non-Euclidean', 'Newtonian', 'Hermitian', 'Calabi']
 
 connectors = ['for', 'of', 'with', 'on', 'and', 'under', 'in', 'from'] 
 
 # = {'Properties', 'Characterization', 'Uniqueness'}
 
 def sentence():
-    s = (random.choice(adjectives) + ' ') + (random.random() > 0.6)*(random.choice(adjectives) + ' ') + (random.random() > 0.7)*(random.choice(adjectives) + ' ') + (random.random() > 0.75)*(random.choice(padjectives) + ' ') + (random.choice(nouns) + ' ')
+    s = (random.choice(adjectives) + ' ') + (random.random() > 0.6)*(random.choice(adjectives) + ' ') + (random.random() > 0.7)*(random.choice(adjectives) + ' ') + (random.random() > 0.8)*(random.choice(padjectives) + ' ') + (random.choice(nouns) + ' ')
 
     if random.random() > 0.7:
         s += (random.choice(connectors) + ' ' + sentence())
